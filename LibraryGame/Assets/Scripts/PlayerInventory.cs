@@ -24,12 +24,6 @@ public class PlayerInventory : MonoBehaviour
     [SerializeField] GameObject ShushHand_item;
 
     [Space(20)]
-    [Header("Item prefabs")]
-    [SerializeField] GameObject BookHand_prefab;
-    [SerializeField] GameObject ShushHand_prefab;
-
-
-    [Space(20)]
     [Header("UI")]
     [SerializeField] Image[] inventorySlotImage = new Image[2];
     [SerializeField] Image[] inventoryBackGroundImage = new Image[2];
@@ -40,63 +34,19 @@ public class PlayerInventory : MonoBehaviour
     [SerializeField] Camera cam;
     [SerializeField] GameObject pickUpItem_gameObject;
 
-
     private Dictionary<itemType, GameObject> itemSetActive = new Dictionary<itemType, GameObject>() { };
-    private Dictionary<itemType, GameObject> itemInstantiate = new Dictionary<itemType, GameObject>() { };
 
     private void Start()
     {
         itemSetActive.Add(itemType.BookHand, BookHand_item);
         itemSetActive.Add(itemType.ShushHand, ShushHand_item);
 
-        itemInstantiate.Add(itemType.BookHand, BookHand_prefab);
-        itemInstantiate.Add(itemType.ShushHand, ShushHand_prefab);
-
         NewItemSelected();
     }
 
     void Update()
     {
-        Ray ray = cam.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hitInfo;
-
-        if (Physics.Raycast(ray, out hitInfo, playerReach))
-        {
-            IPickable item = hitInfo.collider.GetComponent<IPickable>();
-            if (item != null)
-            {
-                pickUpItem_gameObject.SetActive(true);
-                if (Input.GetKey(pickItemKey))
-                {
-                    inventoryList.Add(hitInfo.collider.GetComponent<ItemPickable>().itemScriptableObject.item_type);
-                    item.PickItem();
-                }   
-            }
-            else
-            {
-                pickUpItem_gameObject.SetActive(false);
-
-            }
-        }
-        else
-        {
-            pickUpItem_gameObject.SetActive(false);
-        }
-        //Item Throw
-        if (Input.GetKeyDown(throwItemKey) && inventoryList.Count > 1)
-        {
-            Instantiate(itemInstantiate[inventoryList[selectedItem]], position: throwItem_gameObject.transform.position, new Quaternion());
-            inventoryList.RemoveAt(selectedItem);
-
-            if (selectedItem != 0)
-            {
-                selectedItem -= 1;
-            }
-            NewItemSelected();
-        }
-
-        //UI
-
+        ///UI
         for (int i = 0; i < 2; i++)
         {
             if (i < inventoryList.Count)
@@ -122,9 +72,10 @@ public class PlayerInventory : MonoBehaviour
             }
             a++;
         }
+        ///
 
 
-
+        //Switching inventory
         if (Input.GetKeyDown(KeyCode.Alpha1) && inventoryList.Count > 0)
         {
             selectedItem = 0;
@@ -142,13 +93,9 @@ public class PlayerInventory : MonoBehaviour
         BookHand_item.SetActive(false);
         ShushHand_item.SetActive(false);
 
+
         GameObject selectedItemGameObject = itemSetActive[inventoryList[selectedItem]];
         selectedItemGameObject.SetActive(true);
     }
-}
-
-public interface IPickable
-{
-    void PickItem();
 }
 

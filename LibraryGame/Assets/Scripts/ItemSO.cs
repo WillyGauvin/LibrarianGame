@@ -13,4 +13,4 @@ public class ItemSO : ScriptableObject
     public Sprite item_sprite;
 }
 
-public enum itemType { BookHand, ShushHand};
+public enum itemType {BookHand, ShushHand};
