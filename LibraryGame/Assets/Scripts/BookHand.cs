@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 public class BookHand : MonoBehaviour
 {
@@ -33,6 +34,7 @@ public class BookHand : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //this.gameObject.transform.rotation = Quaternion.Euler(cam.transform.eulerAngles.x, 0, 0);
         if (Book == null)
         {
             Ray ray = cam.ScreenPointToRay(Input.mousePosition);

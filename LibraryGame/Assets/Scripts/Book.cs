@@ -5,7 +5,8 @@ using UnityEngine;
 public class Book : MonoBehaviour
 {
     [SerializeField] BookGenre bookGenre;
-    [SerializeField] char BookLetter;
+    [SerializeField] BookLetter bookLetter;
 }
 
-public enum BookGenre { Red, Green, Blue, Orange};
+public enum BookGenre { Red, Blue, Yellow, Teal};
+public enum BookLetter { A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z };

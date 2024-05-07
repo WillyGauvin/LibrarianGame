@@ -354,11 +354,14 @@
 -analyzer:"C:/Program Files/Unity/Hub/Editor/2022.3.26f1/Editor/Data/Tools/Unity.SourceGenerators/Unity.SourceGenerators.dll"
 "Assets/Scripts/Book.cs"
 "Assets/Scripts/BookHand.cs"
+"Assets/Scripts/CheckForObjects.cs"
 "Assets/Scripts/FPController.cs"
+"Assets/Scripts/GameManager.cs"
 "Assets/Scripts/Item.cs"
 "Assets/Scripts/ItemPickable.cs"
 "Assets/Scripts/ItemSO.cs"
 "Assets/Scripts/PlayerInventory.cs"
+"Assets/Scripts/PushObj.cs"
 -langversion:9.0
 /deterministic
 /optimize-
