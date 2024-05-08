@@ -5,30 +5,56 @@ using UnityEngine.Assertions;
 
 public class GameManager : MonoBehaviour
 {
+    [Header("GameInfo")]
     public float gameScore;
-    public int timeElapsed;
+    public float timeElapsed;
 
+    [Space(20)]
+    [Header("Books")]
     public List<Book> checkedInBooks = new List<Book>();
     public List<Book> checkedOutBooks = new List<Book>();
 
+    [Space(20)]
+    [Header("NoiseStations")]
     public int NoiseStationsMax;
     public int NoiseStationsEnabled;
     public float TotalNoiseLevel;
 
+    [Space(20)]
+    [Header("CheckOutPaths")]
+    public GameObject EnterCheckOutPath;
+    public GameObject ExitCheckOutPath;
+
+    [Space(20)]
+    [Header("CheckInPaths")]
+    public GameObject EnterCheckInPath;
+    public GameObject ExitCheckInPath;
+
+    [Space(20)]
+    [Header("NPC Prefabs")]
+    public GameObject CheckOutNPCprefab;
+    public GameObject CheckInNPCprefab;
+
+
     //public List<NoiseStation> noiseStations = new List<NoiseStation>()
-
-
 
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        timeElapsed += Time.deltaTime;
+
+        if (timeElapsed > 2.0f)
+        {
+            CreateCheckOutEvent();
+            timeElapsed = 0.0f;
+        }
+
     }
 
     void CreateCheckInEvent()
@@ -45,6 +71,22 @@ public class GameManager : MonoBehaviour
         Book CheckInBook = checkedOutBooks[randomIndex];
 
         //Spawn NPC with this random book request.
+
+        //If the line isn't full
+        Path EnterPath = EnterCheckInPath.GetComponent<Path>();
+        Path ExitPath = ExitCheckInPath.GetComponent<Path>();
+        if (EnterPath.IsPointAtIndexOccupied(0) == false)
+        {
+            GameObject citizen = Instantiate(CheckOutNPCprefab, EnterPath.Points[0].transform.position, Quaternion.identity);
+            CheckBookAI AI = citizen.GetComponent<CheckBookAI>();
+
+            AI.EnterPath = EnterPath;
+            AI.ExitPath = ExitPath;
+
+            NPC npc = citizen.GetComponent<NPC>();
+            npc.CitizenType = NPCType.CheckIn;
+            npc.PickupBook(CheckInBook);
+        }
     }
 
     void CreateCheckOutEvent()
@@ -60,6 +102,21 @@ public class GameManager : MonoBehaviour
         Book CheckOutBook = checkedInBooks[randomIndex];
 
         //Spawn NPC with this random book request.
+
+        Path EnterPath = EnterCheckOutPath.GetComponent<Path>();
+        Path ExitPath = ExitCheckOutPath.GetComponent<Path>();
+
+        if (EnterPath.IsPointAtIndexOccupied(0) == false)
+        {
+            GameObject citizen = Instantiate(CheckOutNPCprefab, EnterPath.Points[0].transform.position, Quaternion.identity);
+            CheckBookAI AI = citizen.GetComponent<CheckBookAI>();
+            AI.EnterPath = EnterPath;
+            AI.ExitPath = ExitPath;
+            
+            NPC npc = citizen.GetComponent<NPC>();
+            npc.CitizenType = NPCType.CheckOut;
+            npc.BookRequest = CheckOutBook;
+        }
     }
 
     public void CheckBookIn(Book book)
