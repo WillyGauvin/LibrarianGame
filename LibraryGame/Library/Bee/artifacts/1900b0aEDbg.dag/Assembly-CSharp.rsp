@@ -376,6 +376,7 @@
 "Assets/Scripts/NPC.cs"
 "Assets/Scripts/Path Generation/Path.cs"
 "Assets/Scripts/PlayerInventory.cs"
+"Assets/Scripts/PopUp/PopUp.cs"
 "Assets/Scripts/PushObj.cs"
 -langversion:9.0
 /deterministic

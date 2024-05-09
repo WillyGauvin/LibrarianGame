@@ -50,6 +50,14 @@ public class BookHand : MonoBehaviour
                     if (Input.GetKey(pickItemKey))
                     {
                         Book = hitInfo.collider.gameObject;
+                        if (Book.transform.parent != null)
+                        {
+                            NPC npc = Book.transform.parent.parent.gameObject.GetComponent<NPC>();
+                            if (npc)
+                            {
+                                npc.GiveBook();
+                            }
+                        }
                         Book.transform.position = Vector3.zero;
                         Book.transform.rotation = Quaternion.identity;
                         Book.transform.SetParent(pickUpParent.transform, false);

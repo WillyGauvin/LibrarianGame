@@ -7,12 +7,18 @@ public class GameManager : MonoBehaviour
 {
     [Header("GameInfo")]
     public float gameScore;
-    public float timeElapsed;
+
+    public float checkInTimer;
+    public float checkOutTimer;
 
     [Space(20)]
     [Header("Books")]
     public List<Book> checkedInBooks = new List<Book>();
     public List<Book> checkedOutBooks = new List<Book>();
+
+    //Books that are not able to be checked in or out.
+    //Used to stop NPC's from returning checkedOut books that haven't even left the building yet.
+    public List<Book> purgatoryBooks = new List<Book>();
 
     [Space(20)]
     [Header("NoiseStations")]
@@ -47,13 +53,21 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        timeElapsed += Time.deltaTime;
+        checkOutTimer += Time.deltaTime;
+        checkInTimer += Time.deltaTime;
 
-        if (timeElapsed > 2.0f)
+        if (checkOutTimer > 5.0)
         {
             CreateCheckOutEvent();
-            timeElapsed = 0.0f;
+            checkOutTimer = 0.0f;
         }
+        
+        if (checkInTimer > 10.0f)
+        {
+            CreateCheckInEvent();
+            checkInTimer = 0.0f;
+        }
+        
 
     }
 
@@ -77,15 +91,24 @@ public class GameManager : MonoBehaviour
         Path ExitPath = ExitCheckInPath.GetComponent<Path>();
         if (EnterPath.IsPointAtIndexOccupied(0) == false)
         {
-            GameObject citizen = Instantiate(CheckOutNPCprefab, EnterPath.Points[0].transform.position, Quaternion.identity);
+            Path Enter = EnterPath.GetComponent<Path>();
+            Enter.TogglePointOccupation(0);
+
+            GameObject citizen = Instantiate(CheckInNPCprefab, EnterPath.Points[0].transform.position, Quaternion.identity);
+
+
             CheckBookAI AI = citizen.GetComponent<CheckBookAI>();
 
             AI.EnterPath = EnterPath;
             AI.ExitPath = ExitPath;
 
             NPC npc = citizen.GetComponent<NPC>();
+            npc.gameManager = this;
             npc.CitizenType = NPCType.CheckIn;
             npc.PickupBook(CheckInBook);
+
+            //Remove the book from checkedOut books so other npc's can't also try to return it while this npc attempts to.
+            AddToPurgatory(CheckInBook);
         }
     }
 
@@ -108,35 +131,74 @@ public class GameManager : MonoBehaviour
 
         if (EnterPath.IsPointAtIndexOccupied(0) == false)
         {
+            Path Enter = EnterPath.GetComponent<Path>();
+            Enter.TogglePointOccupation(0);
+
             GameObject citizen = Instantiate(CheckOutNPCprefab, EnterPath.Points[0].transform.position, Quaternion.identity);
+
+
             CheckBookAI AI = citizen.GetComponent<CheckBookAI>();
             AI.EnterPath = EnterPath;
             AI.ExitPath = ExitPath;
             
             NPC npc = citizen.GetComponent<NPC>();
+            npc.gameManager = this;
             npc.CitizenType = NPCType.CheckOut;
             npc.BookRequest = CheckOutBook;
+
+            //Add to purgatory so other NPC's don't request the same book.
+            AddToPurgatory(CheckOutBook);
         }
     }
 
     public void CheckBookIn(Book book)
     {
-        Assert.IsTrue(checkedOutBooks.Contains(book));
         Assert.IsFalse(checkedInBooks.Contains(book));
 
-        checkedOutBooks.Remove(book);
+        RemoveFromPurgatory(book);
         checkedInBooks.Add(book);
 
     }
 
     public void CheckBookOut(Book book)
     {
-        Assert.IsTrue(checkedInBooks.Contains(book));
         Assert.IsFalse(checkedOutBooks.Contains(book));
 
-        checkedInBooks.Remove(book);
+        RemoveFromPurgatory(book);
         checkedOutBooks.Add(book);
 
+    }
+
+    public void AddToPurgatory(Book book)
+    {
+        if (!purgatoryBooks.Contains(book))
+        {
+            if (checkedOutBooks.Contains(book))
+            {
+                checkedOutBooks.Remove(book);
+            }
+            else if (checkedInBooks.Contains(book))
+            {
+                checkedInBooks.Remove(book);
+            }
+            purgatoryBooks.Add(book);
+        }
+        else
+        {
+            Assert.IsTrue(false);
+        }
+    }
+
+    public void RemoveFromPurgatory(Book book)
+    {
+        if (purgatoryBooks.Contains(book))
+        {
+            purgatoryBooks.Remove(book);
+        }
+        else
+        {
+            Assert.IsTrue(false);
+        }
     }
 
     void CreateNoiseEvent()

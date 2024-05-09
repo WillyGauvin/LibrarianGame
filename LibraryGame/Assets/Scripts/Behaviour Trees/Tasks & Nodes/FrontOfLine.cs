@@ -33,11 +33,13 @@ public class FrontOfLine : Task
                 {
                     if (npc.NPCBook == null)
                     {
+                        npc.isFrontOfLine = true;
                         return NodeResult.RUNNING;
                     }
                     else
                     {
                         EnterPath.TogglePointOccupation(Index);
+                        npc.isFrontOfLine = false;
                         return NodeResult.SUCCESS;
                     }
                 }
