@@ -17,6 +17,10 @@ public class NPC : MonoBehaviour
     [SerializeField] Sprite BlueSprite;
     [SerializeField] Sprite DefaultSprite;
 
+    [Space(10)]
+    [Header("Letters")]
+    [SerializeField] Sprite[] Letters;
+    [Space(10)]
 
 
     GameObject popUp;
@@ -58,11 +62,11 @@ public class NPC : MonoBehaviour
         }
         if (isFrontOfLine && popUp == null)
         {
-            Vector3 worldPos = gameObject.transform.position + new Vector3(0, 5, 0);
+            Vector3 worldPos = gameObject.transform.position + new Vector3(0, 1.75f, 0);
             popUp = Instantiate(popUp_prefab, worldPos, new Quaternion());
 
-            string letter = Enum.GetName(typeof(BookLetter), BookRequest.bookLetter);
-            popUp.GetComponent<PopUp>().text_value = letter;
+            BookLetter letter = BookRequest.bookLetter;
+            Sprite letterSprite = Letters[(int)letter];
 
             Sprite sprite;
             BookGenre Genre = BookRequest.bookGenre;
@@ -86,7 +90,8 @@ public class NPC : MonoBehaviour
                     break;
                     
             }
-            popUp.GetComponent<PopUp>().image_value = sprite;
+            popUp.GetComponent<PopUp>().GenreImage_value = sprite;
+            popUp.GetComponent<PopUp>().LetterImage_value = letterSprite;
 
         }
         if (!isFrontOfLine && popUp != null)

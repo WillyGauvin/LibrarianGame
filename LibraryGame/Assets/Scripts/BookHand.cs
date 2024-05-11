@@ -11,6 +11,7 @@ public class BookHand : MonoBehaviour
 
     [SerializeField]
     private GameObject Book = null;
+    private GameObject LookingAtBook = null;
 
     [SerializeField] Camera cam;
 
@@ -19,6 +20,7 @@ public class BookHand : MonoBehaviour
     [Space(20)]
     [Header("Keys")]
     [SerializeField] KeyCode throwItemKey;
+    [SerializeField] KeyCode dropItemKey;
     [SerializeField] KeyCode pickItemKey;
 
     public float playerReach;
@@ -46,6 +48,20 @@ public class BookHand : MonoBehaviour
 
                 if (hitInfo.collider.GetComponent<Book>())
                 {
+                    if (LookingAtBook == null)
+                    {
+                        LookingAtBook = hitInfo.collider.gameObject;
+                        LookingAtBook.GetComponent<Outline>().enabled = true;
+                    }
+                    else if (LookingAtBook != hitInfo.collider.gameObject)
+                    {
+                        LookingAtBook.GetComponent<Outline>().enabled = false;
+                        LookingAtBook = hitInfo.collider.gameObject;
+                        LookingAtBook.GetComponent<Outline>().enabled = true;
+
+                    }
+
+
                     pickUpItemText_gameObject.SetActive(true);
                     if (Input.GetKey(pickItemKey))
                     {
@@ -61,6 +77,10 @@ public class BookHand : MonoBehaviour
                         Book.transform.position = Vector3.zero;
                         Book.transform.rotation = Quaternion.identity;
                         Book.transform.SetParent(pickUpParent.transform, false);
+
+                        //ToggleOutline
+                        LookingAtBook.GetComponent<Outline>().enabled = false;
+
                         if (rb != null)
                         {
                             rb.isKinematic = true;
@@ -69,12 +89,23 @@ public class BookHand : MonoBehaviour
                 }
                 else
                 {
+                    if (LookingAtBook != null)
+                    {
+                        LookingAtBook.GetComponent<Outline>().enabled = false;
+                        LookingAtBook = null;
+                    }
                     pickUpItemText_gameObject.SetActive(false);
 
                 }
             }
             else
             {
+                if (LookingAtBook != null)
+                {
+                    LookingAtBook.GetComponent<Outline>().enabled = false;
+                    LookingAtBook = null;
+                }
+
                 pickUpItemText_gameObject.SetActive(false);
             }
         }
@@ -83,7 +114,7 @@ public class BookHand : MonoBehaviour
         {
             pickUpItemText_gameObject.SetActive(false);
             //Item Throw
-            if (Input.GetKeyDown(throwItemKey) && Book != null)
+            if (Input.GetKeyDown(dropItemKey) && Book != null)
             {
                 Book.transform.SetParent(null);
                 Rigidbody rb = Book.GetComponent<Rigidbody>();
@@ -93,6 +124,31 @@ public class BookHand : MonoBehaviour
                 }
                 Book = null;
             }
+            else if (Input.GetKeyDown(throwItemKey) && Book != null)
+            {
+                Throw();
+            }
+        }
+    }
+
+    private void Throw()
+    {
+        if (Book != null)
+        {
+            Book.transform.SetParent(null);
+            Rigidbody rb = Book.GetComponent<Rigidbody>();
+            if (rb != null)
+            {
+                rb.isKinematic = false;
+            }
+
+            Book book = Book.GetComponent<Book>();
+
+            Vector3 forceToAdd = cam.transform.forward * book.throwForce + transform.up * book.upwardsThrowForce;
+
+            rb.AddForce(forceToAdd, ForceMode.Impulse);
+
+            Book = null;
         }
     }
 }

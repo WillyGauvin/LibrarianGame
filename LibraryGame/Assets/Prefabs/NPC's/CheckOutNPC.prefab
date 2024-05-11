@@ -600,11 +600,38 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   popUp_prefab: {fileID: 826292076198196929, guid: 2a7d431eb1c110145ae3dad38c3c0583, type: 3}
-  RedSprite: {fileID: 21300000, guid: 8dfbc6a3d2a48624f943c30fef62d0e4, type: 3}
-  YellowSprite: {fileID: 21300000, guid: ac4573aa5febf4d4e91d466e1d026c58, type: 3}
-  TealSprite: {fileID: 21300000, guid: 6ad9270f00295864fa4860098da2bd83, type: 3}
-  BlueSprite: {fileID: 21300000, guid: 20d6da6b449a9aa41b42bb13eaed142d, type: 3}
+  RedSprite: {fileID: 21300000, guid: f97686472119e7b4ba75cd6e71311057, type: 3}
+  YellowSprite: {fileID: 21300000, guid: 2c6c23be5d08d864e91fbf255f48d443, type: 3}
+  TealSprite: {fileID: 21300000, guid: 28bc715bbaf02d74eb7e9ed5d9452cec, type: 3}
+  BlueSprite: {fileID: 21300000, guid: cf23fa3bb869f7c4ba33ef0b4b0509ec, type: 3}
   DefaultSprite: {fileID: 21300000, guid: 78edd49e8d3cb704c806241c064055ec, type: 3}
+  Letters:
+  - {fileID: 21300000, guid: 46cd8b519515a1a4587b44356589192f, type: 3}
+  - {fileID: 21300000, guid: ddd1e6f08361c764b8442ac57541fbba, type: 3}
+  - {fileID: 21300000, guid: d0233fbfc345fe34494c9b6a6d8cd656, type: 3}
+  - {fileID: 21300000, guid: 33c4f2e860e7b964888382da92a05cbf, type: 3}
+  - {fileID: 21300000, guid: 8a184ade73e16a345b0d276129012c0f, type: 3}
+  - {fileID: 21300000, guid: 2b540fc142ccec74bb9ea322dfc770b1, type: 3}
+  - {fileID: 21300000, guid: 4aa5a028dfa81e34a9622b214cf46764, type: 3}
+  - {fileID: 21300000, guid: a177a8f7b0ea2434a819c9c12f82ee6a, type: 3}
+  - {fileID: 21300000, guid: a49db0c229962204ebb8bbf3d1c7b3c6, type: 3}
+  - {fileID: 21300000, guid: e359c160a916ee14080652c937332731, type: 3}
+  - {fileID: 21300000, guid: 7f780339d04752242846fe4c01561f1a, type: 3}
+  - {fileID: 21300000, guid: 2c611d78d3556f04bb58420060f67e40, type: 3}
+  - {fileID: 21300000, guid: 9ae05012340125644be86bb8bd6c4317, type: 3}
+  - {fileID: 21300000, guid: 381c72894fde1b343baa9b598b16a426, type: 3}
+  - {fileID: 21300000, guid: 6eef50b9a2965f64785644fe07828b17, type: 3}
+  - {fileID: 21300000, guid: 4c3598f740da17b4483daf1376b6ad3a, type: 3}
+  - {fileID: 21300000, guid: 9fa64b073b7f431439f0a05827415f27, type: 3}
+  - {fileID: 21300000, guid: 7f57dbb1b2a5eac44a6bf444562ad944, type: 3}
+  - {fileID: 21300000, guid: 7f704b91e73ff8142a83baf48ecd6b78, type: 3}
+  - {fileID: 21300000, guid: 71d4c66f55fe9254ea92ba86e93182f3, type: 3}
+  - {fileID: 21300000, guid: 89fac86d7d37c7c42857addf55c1346d, type: 3}
+  - {fileID: 21300000, guid: 737068c4373b92044934461b21247ef4, type: 3}
+  - {fileID: 21300000, guid: 57a6bc0820b62614ebd48f038df19237, type: 3}
+  - {fileID: 21300000, guid: be74579929af6884a8b192ffecb99730, type: 3}
+  - {fileID: 21300000, guid: cb6ddd06e3ab2504f9bfb4557e092f52, type: 3}
+  - {fileID: 21300000, guid: 990c52c1ad858804c981df6f400dbb66, type: 3}
   gameManager: {fileID: 0}
   CitizenType: 1
   NPCBook: {fileID: 0}

@@ -1,11 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class Book : MonoBehaviour
 {
     [SerializeField] public BookGenre bookGenre;
     [SerializeField] public BookLetter bookLetter;
+
+    [SerializeField] public float throwForce;
+    [SerializeField] public float upwardsThrowForce;
+
+    public void Start()
+    {
+        GetComponent<Outline>().enabled = false;
+    }
 }
 
 public enum BookGenre { Red, Blue, Yellow, Teal};

@@ -5,16 +5,16 @@ m_ProjectFiles:
     m_ContentTrackingEnabled: 1
     m_ModificationDate:
       serializedVersion: 2
-      ticks: 638505238261005224
-    m_Hash: 2086951786
+      ticks: 638510406710247020
+    m_Hash: 3180487116
   m_LockFileStatus:
     m_FilePath: C:/Users/willi/Desktop/LibrarianGame/LibraryGame/Packages/packages-lock.json
     m_PathExists: 1
     m_ContentTrackingEnabled: 1
     m_ModificationDate:
       serializedVersion: 2
-      ticks: 638505238261005224
-    m_Hash: 744252605
+      ticks: 638510406716650762
+    m_Hash: 838182172
 m_EmbeddedPackageManifests:
   m_ManifestsStatus: {}
 m_LocalPackages:
