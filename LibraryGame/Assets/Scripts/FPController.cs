@@ -13,7 +13,7 @@ public class FPController : MonoBehaviour
 
 
     public float lookSpeed = 2f;
-    public float lookXLimit = 30f;
+    public float lookXLimit = 50f;
 
 
     Vector3 moveDirection = Vector3.zero;

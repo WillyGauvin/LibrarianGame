@@ -10,7 +10,7 @@ public class BookHand : MonoBehaviour
     private Transform pickUpParent;
 
     [SerializeField]
-    private GameObject Book = null;
+    public GameObject Book = null;
     private GameObject LookingAtBook = null;
 
     [SerializeField] Camera cam;
@@ -22,21 +22,16 @@ public class BookHand : MonoBehaviour
     [SerializeField] KeyCode throwItemKey;
     [SerializeField] KeyCode dropItemKey;
     [SerializeField] KeyCode pickItemKey;
+    [SerializeField] KeyCode placeModeKey;
+
+    public bool isPlacing = false;
 
     public float playerReach;
-
-
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
     // Update is called once per frame
     void Update()
     {
-        //this.gameObject.transform.rotation = Quaternion.Euler(cam.transform.eulerAngles.x, 0, 0);
+
         if (Book == null)
         {
             Ray ray = cam.ScreenPointToRay(Input.mousePosition);
@@ -110,23 +105,35 @@ public class BookHand : MonoBehaviour
             }
         }
 
+        //If Player is holding a book.
         else
         {
             pickUpItemText_gameObject.SetActive(false);
-            //Item Throw
-            if (Input.GetKeyDown(dropItemKey) && Book != null)
+
+            //Item Place
+            
+            if (Input.GetKeyDown(placeModeKey) && Book != null)
             {
-                Book.transform.SetParent(null);
-                Rigidbody rb = Book.GetComponent<Rigidbody>();
-                if (rb != null)
-                {
-                    rb.isKinematic = false;
-                }
-                Book = null;
+                isPlacing = !isPlacing;
             }
-            else if (Input.GetKeyDown(throwItemKey) && Book != null)
+
+            if (isPlacing == false)
             {
-                Throw();
+                //Item Throw
+                if (Input.GetKeyDown(dropItemKey) && Book != null)
+                {
+                    Book.transform.SetParent(null);
+                    Rigidbody rb = Book.GetComponent<Rigidbody>();
+                    if (rb != null)
+                    {
+                        rb.isKinematic = false;
+                    }
+                    Book = null;
+                }
+                else if (Input.GetKeyDown(throwItemKey) && Book != null)
+                {
+                    Throw();
+                }
             }
         }
     }
@@ -150,5 +157,12 @@ public class BookHand : MonoBehaviour
 
             Book = null;
         }
+    }
+
+    public void SwitchedHands()
+    {
+        isPlacing = false;
+        pickUpItemText_gameObject.SetActive(false);
+        gameObject.GetComponent<PlaceObject>().ForceDisable();
     }
 }

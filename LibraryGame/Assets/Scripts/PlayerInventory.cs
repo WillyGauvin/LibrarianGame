@@ -90,6 +90,11 @@ public class PlayerInventory : MonoBehaviour
 
     private void NewItemSelected()
     {
+        //ShushHand was selected
+        if (selectedItem == 1)
+        {
+            BookHand_item.GetComponent<BookHand>().SwitchedHands();
+        }
         BookHand_item.SetActive(false);
         ShushHand_item.SetActive(false);
 
