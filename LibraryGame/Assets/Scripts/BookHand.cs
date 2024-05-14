@@ -53,12 +53,15 @@ public class BookHand : MonoBehaviour
                         LookingAtBook.GetComponent<Outline>().enabled = false;
                         LookingAtBook = hitInfo.collider.gameObject;
                         LookingAtBook.GetComponent<Outline>().enabled = true;
-
+                    }
+                    else if (LookingAtBook == hitInfo.collider.gameObject && LookingAtBook.GetComponent<Outline>().isActiveAndEnabled == false)
+                    {
+                        LookingAtBook.GetComponent<Outline>().enabled = true;
                     }
 
 
                     pickUpItemText_gameObject.SetActive(true);
-                    if (Input.GetKey(pickItemKey))
+                    if (Input.GetKeyDown(pickItemKey))
                     {
                         Book = hitInfo.collider.gameObject;
                         if (Book.transform.parent != null)
@@ -164,5 +167,9 @@ public class BookHand : MonoBehaviour
         isPlacing = false;
         pickUpItemText_gameObject.SetActive(false);
         gameObject.GetComponent<PlaceObject>().ForceDisable();
+        if (LookingAtBook != null)
+        {
+            LookingAtBook.GetComponent<Outline>().enabled = false;
+        }
     }
 }

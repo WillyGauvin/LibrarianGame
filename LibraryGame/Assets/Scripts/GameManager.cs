@@ -42,6 +42,8 @@ public class GameManager : MonoBehaviour
     public GameObject CheckInNPCprefab;
 
 
+
+
     //public List<NoiseStation> noiseStations = new List<NoiseStation>()
 
     // Start is called before the first frame update

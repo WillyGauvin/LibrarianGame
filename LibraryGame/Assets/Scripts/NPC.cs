@@ -11,15 +11,20 @@ public class NPC : MonoBehaviour
     [SerializeField] GameObject popUp_prefab;
     [Space(10)]
     [Header("PopUpImages")]
-    [SerializeField] Sprite RedSprite;
-    [SerializeField] Sprite YellowSprite;
-    [SerializeField] Sprite TealSprite;
-    [SerializeField] Sprite BlueSprite;
-    [SerializeField] Sprite DefaultSprite;
+    [SerializeField] Sprite BlueBook;
+    [SerializeField] Sprite RedBook;
+    [SerializeField] Sprite TealBook;
+    [SerializeField] Sprite YellowBook;
+    [SerializeField] Sprite DefaultBook;
 
     [Space(10)]
     [Header("Letters")]
-    [SerializeField] Sprite[] Letters;
+    [SerializeField] Sprite[] BlueLetters;
+    [SerializeField] Sprite[] OrangeLetters;
+    [SerializeField] Sprite[] TealLetters;
+    [SerializeField] Sprite[] YellowLetters;
+    [SerializeField] Sprite DefaultLetter;
+
     [Space(10)]
 
 
@@ -66,31 +71,37 @@ public class NPC : MonoBehaviour
             popUp = Instantiate(popUp_prefab, worldPos, new Quaternion());
 
             BookLetter letter = BookRequest.bookLetter;
-            Sprite letterSprite = Letters[(int)letter];
 
-            Sprite sprite;
+            Sprite letterSprite;
+            Sprite bookSprite;
             BookGenre Genre = BookRequest.bookGenre;
 
             switch (Genre)
             {
                 case BookGenre.Red:
-                    sprite = RedSprite;
+                    bookSprite = RedBook;
+                    letterSprite = TealLetters[(int)letter];
                     break;
                 case BookGenre.Yellow:
-                    sprite = YellowSprite;
+                    bookSprite = YellowBook;
+                    letterSprite = BlueLetters[(int)letter];
                     break;
                 case BookGenre.Teal:
-                    sprite = TealSprite;
+                    bookSprite = TealBook;
+                    letterSprite = OrangeLetters[(int)letter];
                     break;
                 case BookGenre.Blue:
-                    sprite = BlueSprite;
+                    bookSprite = BlueBook;
+                    letterSprite = YellowLetters[(int)letter];
                     break;
                 default:
-                    sprite = DefaultSprite;
+                    bookSprite = DefaultBook;
+                    letterSprite = DefaultLetter;
                     break;
                     
             }
-            popUp.GetComponent<PopUp>().GenreImage_value = sprite;
+
+            popUp.GetComponent<PopUp>().GenreImage_value = bookSprite;
             popUp.GetComponent<PopUp>().LetterImage_value = letterSprite;
 
         }

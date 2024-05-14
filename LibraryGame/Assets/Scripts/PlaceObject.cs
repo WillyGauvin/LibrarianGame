@@ -56,6 +56,7 @@ public class PlaceObject : MonoBehaviour
                     {
                         Vector3 rotation = new Vector3(0, rotationSpeed * Time.deltaTime, 0);
                         ghost.transform.Rotate(rotation, Space.World);
+
                     }
                     else if (Input.GetKey(rotateCounterKey))
                     {
