@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Purchasing;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -10,6 +11,8 @@ public class GameManager : MonoBehaviour
 
     public float checkInTimer;
     public float checkOutTimer;
+
+    [SerializeField] float noiseEventTimer;
 
     [Space(20)]
     [Header("Books")]
@@ -22,9 +25,12 @@ public class GameManager : MonoBehaviour
 
     [Space(20)]
     [Header("NoiseStations")]
-    public int NoiseStationsMax;
-    public int NoiseStationsEnabled;
+    public List<NoiseStation> occuipiedStations;
+    public List<NoiseStation> unoccupiedStations;
     public float TotalNoiseLevel;
+    public Transform noiseNPCEntrance;
+    public Transform noiseNPCExit;
+    public GameObject noiseNPCprefab;
 
     [Space(20)]
     [Header("CheckOutPaths")]
@@ -57,6 +63,7 @@ public class GameManager : MonoBehaviour
     {
         checkOutTimer += Time.deltaTime;
         checkInTimer += Time.deltaTime;
+        noiseEventTimer += Time.deltaTime;
 
         if (checkOutTimer > 5.0)
         {
@@ -69,7 +76,14 @@ public class GameManager : MonoBehaviour
             CreateCheckInEvent();
             checkInTimer = 0.0f;
         }
-        
+
+        if (noiseEventTimer > 5.0f)
+        {
+            CreateNoiseEvent();
+            noiseEventTimer = 0.0f;
+        }
+
+        CalculateNoiseLevel();
 
     }
 
@@ -205,11 +219,27 @@ public class GameManager : MonoBehaviour
 
     void CreateNoiseEvent()
     {
+        if (unoccupiedStations.Count > 0)
+        {
+            int index = Random.Range(0, unoccupiedStations.Count);
+            NoiseStation noiseStation = unoccupiedStations[index];
 
+            GameObject noiseNPC = Instantiate(noiseNPCprefab, noiseNPCEntrance.position, Quaternion.identity);
+            noiseNPC.GetComponent<NoiseNPC>().noiseStation = noiseStation;
+            noiseNPC.GetComponent<NoiseNPC>().exit = noiseNPCExit;
+            unoccupiedStations.Remove(noiseStation);
+            occuipiedStations.Add(noiseStation);
+        }
     }
 
     void CalculateNoiseLevel()
     {
+        float noiseLevel = 0;
+        for (int i = 0; i < occuipiedStations.Count; i++)
+        {
+            noiseLevel += occuipiedStations[i].GetComponent<NoiseStation>().noiseLevel;
+        }
+        TotalNoiseLevel = noiseLevel;
 
     }
 
