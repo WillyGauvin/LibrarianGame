@@ -5,7 +5,9 @@ using UnityEngine;
 public class PlaceObject : MonoBehaviour
 {
     [SerializeField] GameObject ghost;
-    
+    [SerializeField] GameObject ghostChild;
+
+
     public GameObject placed;
 
     [SerializeField] float placementReach;
@@ -20,6 +22,8 @@ public class PlaceObject : MonoBehaviour
     [SerializeField] float rotationSpeed;
 
     BookHand bookHand;
+
+    [SerializeField] LayerMask raycastLayer;
 
     Quaternion DefaultRotaion = Quaternion.Euler(new Vector3(0.0f, 90.0f, 0.0f));
 
@@ -46,11 +50,11 @@ public class PlaceObject : MonoBehaviour
 
                 Ray ray = cam.ScreenPointToRay(Input.mousePosition);
 
-                if (Physics.Raycast(ray, out hit, placementReach))
+                if (Physics.Raycast(ray, out hit, placementReach, raycastLayer))
                 {
                     ghost.SetActive(true);
 
-                    ghost.transform.position = hit.point;
+                    ghost.transform.position = hit.point + new Vector3(0.0f,0.005f,0.0f);
 
                     if (Input.GetKey(rotateClockWiseKey))
                     {
@@ -63,7 +67,7 @@ public class PlaceObject : MonoBehaviour
                         Vector3 rotation = new Vector3(0, -rotationSpeed * Time.deltaTime, 0);
                         ghost.transform.Rotate(rotation, Space.World);
                     }
-                    if (Input.GetKey(placeItemKey))
+                    if (Input.GetKey(placeItemKey) && ghostChild.GetComponent<GhostBook>().placable)
                     {
                         placed.transform.SetParent(null);
                         Rigidbody rb = placed.GetComponent<Rigidbody>();

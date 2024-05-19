@@ -8,7 +8,7 @@ public class FPController : MonoBehaviour
     public Camera playerCamera;
     public float walkSpeed = 6f;
     public float runSpeed = 12f;
-    public float jumpPower = 7f;
+    public float jumpPower = 0.0f;
     public float gravity = 10f;
 
 
