@@ -6,8 +6,10 @@ using UnityEngine.Assertions;
 public class BookHand : MonoBehaviour
 {
 
-    [SerializeField]
-    private Transform pickUpParent;
+    [SerializeField] Transform pickUpParent;
+    [SerializeField] Transform throwParent;
+    [SerializeField] LayerMask raycastLayer;
+
 
     [SerializeField]
     public GameObject Book = null;
@@ -75,6 +77,7 @@ public class BookHand : MonoBehaviour
                         Book.transform.position = Vector3.zero;
                         Book.transform.rotation = Quaternion.identity;
                         Book.transform.SetParent(pickUpParent.transform, false);
+                        Book.GetComponent<Book>().PickupBook();
 
                         //ToggleOutline
                         LookingAtBook.GetComponent<Outline>().enabled = false;
@@ -122,7 +125,7 @@ public class BookHand : MonoBehaviour
 
             if (isPlacing == false)
             {
-                //Item Throw
+                //Item Drop
                 if (Input.GetKeyDown(dropItemKey) && Book != null)
                 {
                     Book.transform.SetParent(null);
@@ -131,8 +134,10 @@ public class BookHand : MonoBehaviour
                     {
                         rb.isKinematic = false;
                     }
+                    Book.GetComponent<Book>().DropBook();
                     Book = null;
                 }
+                //Item Throw
                 else if (Input.GetKeyDown(throwItemKey) && Book != null)
                 {
                     Throw();
@@ -145,6 +150,12 @@ public class BookHand : MonoBehaviour
     {
         if (Book != null)
         {
+            RaycastHit hit;
+
+            Vector3 direction = pickUpParent.position - throwParent.position;
+
+            Ray ray = new Ray(throwParent.position, direction);
+
             Book.transform.SetParent(null);
             Rigidbody rb = Book.GetComponent<Rigidbody>();
             if (rb != null)
@@ -152,11 +163,18 @@ public class BookHand : MonoBehaviour
                 rb.isKinematic = false;
             }
 
+            if (Physics.Raycast(ray, out hit, direction.magnitude, raycastLayer))
+            {
+                Book.transform.position = throwParent.position;
+            }
+
             Book book = Book.GetComponent<Book>();
 
             Vector3 forceToAdd = cam.transform.forward * book.throwForce + transform.up * book.upwardsThrowForce;
 
             rb.AddForce(forceToAdd, ForceMode.Impulse);
+
+            Book.GetComponent<Book>().DropBook();
 
             Book = null;
         }

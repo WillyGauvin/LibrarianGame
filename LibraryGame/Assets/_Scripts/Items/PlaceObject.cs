@@ -76,6 +76,8 @@ public class PlaceObject : MonoBehaviour
                             rb.isKinematic = false;
                         }
                         placed.transform.position = ghost.transform.position;
+                        placed.GetComponent<Book>().DropBook();
+
 
                         Quaternion rotation = Quaternion.Euler(-90, ghost.transform.rotation.eulerAngles.y, ghost.transform.rotation.eulerAngles.z);
 

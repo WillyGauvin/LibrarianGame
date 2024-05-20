@@ -16,6 +16,16 @@ public class Book : MonoBehaviour
     {
         GetComponent<Outline>().enabled = false;
     }
+
+    public void PickupBook()
+    {
+        gameObject.layer = LayerMask.NameToLayer("PlayerHand");
+    }
+
+    public void DropBook()
+    {
+        gameObject.layer = LayerMask.NameToLayer("Book");
+    }
 }
 
 public enum BookGenre { Red, Blue, Yellow, Teal};
